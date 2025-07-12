@@ -7,16 +7,17 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="brand">
-        <Link to="/">
+        <Link to="/products">
           {/* <img src="/logo.png" alt="Brand Logo" /> */}
           Shop Online
         </Link>
       </div>
 
       <nav className="nav-links">
-        <Link to="/men">Men</Link>
-        <Link to="/women">Women</Link>
-        <Link to="/kids">Kids</Link>
+        <Link to="/products?query=men's clothing">Men</Link>
+        <Link to="/products?query=women's clothing">Women</Link>
+        <Link to="/products?query=jewelery">Jwellery</Link>
+        <Link to="/products?query=electronics">Electronics</Link>
       </nav>
 
       <div className="search-bar">
