@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaHeart, FaShoppingBag } from 'react-icons/fa';
 import './header.scss';
+import { getAuthUser } from '../../contex/Auth';
 
 const Header = () => {
+  const { setAccessToken, setIsLoggedIn, isLoggedIn } = getAuthUser();
+  const handlelogout = () => {
+    setAccessToken('')
+    setIsLoggedIn(false)
+  }
   return (
     <header className="main-header">
       <div className="brand">
@@ -34,6 +40,8 @@ const Header = () => {
         <Link to="/bag" title="Bag">
           <FaShoppingBag className="icon" />
         </Link>
+        {isLoggedIn && <h5 onClick={handlelogout}>Logout</h5>}
+
       </div>
     </header>
   );
