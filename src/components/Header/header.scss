@@ -1,0 +1,62 @@
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: fixed;
+  left: 0;
+  right: 0;
+
+  .brand img {
+    height: 40px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+
+    a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+
+      &:hover {
+        color: #007bff;
+      }
+    }
+  }
+
+  .search-bar {
+    flex: 1;
+    margin: 0 2rem;
+
+    input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+
+  .icons {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+      color: #333;
+
+      .icon {
+        font-size: 1.2rem;
+        cursor: pointer;
+
+        &:hover {
+          color: #007bff;
+        }
+      }
+    }
+  }
+}
