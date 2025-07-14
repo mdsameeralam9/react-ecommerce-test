@@ -1,0 +1,37 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #f4f4f4;
+    min-height: 100vh;
+}
+
+.profile-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+
+    h2 {
+        margin: 1rem 0 0.5rem;
+        color: #333;
+    }
+
+    p {
+        margin: 0.5rem 0;
+        color: #555;
+        font-size: 0.95rem;
+
+        strong {
+            color: #222;
+        }
+    }
+
+    .profile-icon {
+        font-size: 5rem;
+        color: #4a90e2;
+    }
+}

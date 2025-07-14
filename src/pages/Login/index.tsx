@@ -6,33 +6,39 @@ import { axiosInstance } from '../../services/APIConfig';
 import { getAuthUser } from '../../contex/Auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-interface LoginFormInterface{
+interface LoginFormInterface {
   email: string;
   password: string;
 }
 
 const Login = () => {
-  const [formData, setFormData] = useState<LoginFormInterface>({email:"", password: ""});
+  const [formData, setFormData] = useState<LoginFormInterface>({ email: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<LoginFormInterface|null>(null);
+  const [error, setError] = useState<LoginFormInterface | null>(null);
   const { setAccessToken, setIsLoggedIn } = getAuthUser();
   const loaction = useLocation()
   const navigate = useNavigate();
   const from = loaction.state?.from?.pathname || '/products';
 
   // handleChange
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const {name="", value=""} = e.target;
-    setFormData(f => ({...f, [name]:value}))
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name = "", value = "" } = e.target;
+    setFormData(f => ({ ...f, [name]: value }))
   }
 
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true)
     // Add login logic here
     try {
       await new Promise((res) => setTimeout(() => { res(1) }, 4000))
-      const response = await axiosInstance.post("/login", { email, password });
+      const response = await axiosInstance.post("/login",
+        JSON.stringify({ email, password }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
+      );
 
       if (!response?.data?.accessToken) {
         console.log(response)
@@ -40,19 +46,17 @@ const Login = () => {
       }
       setAccessToken(response?.data?.accessToken)
       setIsLoggedIn(true)
-      
+
       navigate(from, { replace: true })
     } catch (error) {
-       setError(true)
-    } finally{
+      setError(true)
+    } finally {
       setLoading(false)
     }
-
   };
 
-  if(error) return <h1>Form submit error</h1>
 
-  const { email="", password="" } = formData
+  const { email = "", password = "" } = formData
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>

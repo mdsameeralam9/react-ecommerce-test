@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaHeart, FaShoppingBag } from 'react-icons/fa';
 import './header.scss';
 import { getAuthUser } from '../../contex/Auth';
+import { axiosInstance } from '../../services/APIConfig';
+import { ClipLoader } from 'react-spinners';
 
 const Header = () => {
-  const { setAccessToken, setIsLoggedIn, isLoggedIn } = getAuthUser();
-  const handlelogout = () => {
-    setAccessToken('')
-    setIsLoggedIn(false)
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { setAccessToken, setIsLoggedIn, isLoggedIn=false } = getAuthUser();
+  const handlelogout = async () => {
+    // make an api call
+    setLoading(true)
+    try {
+      await new Promise((res) => setTimeout(() => { res(1) }, 4000))
+      const response = await axiosInstance.get('/logout', { withCredentials: true });
+      if(!response?.data?.ok){
+        throw new Error("failed to logout")
+      }
+      console.log(response)
+      setAccessToken('')
+      setIsLoggedIn(false)
+    } catch (error) {
+      alert("Failed to logout")
+    } finally {
+      setLoading(false)
+    }
+
   }
   return (
     <header className="main-header">
@@ -40,7 +59,7 @@ const Header = () => {
         <Link to="/bag" title="Bag">
           <FaShoppingBag className="icon" />
         </Link>
-        {isLoggedIn && <h5 onClick={handlelogout}>Logout</h5>}
+        {isLoggedIn && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
 
       </div>
     </header>
