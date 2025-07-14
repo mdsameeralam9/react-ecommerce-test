@@ -12,10 +12,26 @@ import { getAuthUser } from '../contex/Auth';
 
 const ProtectedRoute = () => {
   const { isLoggedIn } = getAuthUser();
-  const loaction = useLocation()
+  const location = useLocation();
   const isUser = isLoggedIn ?? false;
-  return isUser ? <Outlet /> : <Navigate to="" />
+  return isUser ? <Outlet /> : <Navigate to="" state={{ from: location }} replace />
 }
+
+// how to login and logout using this token 
+// how to accees route and refresh if fail in intersection
+// other login logot scenarios
+// seesion based login
+
+// font
+// optimisation
+// ErrorBoundry
+// redux toolkit - list add, wishlist addredd checkout, payment, header status
+
+// how many ways for protected route
+// role based login
+// multi lang
+// dark ligh theme
+// search filter sidebar, details
 
 function App() {
 
@@ -26,7 +42,6 @@ function App() {
         <Routes>
           <Route path="" element={<Login />} />
           <Route path="/products" element={<ProductList />} />
-
           <Route element={<ProtectedRoute />}>
             <Route path="/bag" element={<Bag />} />
             <Route path="/wishlist" element={<Wishlist />} />
