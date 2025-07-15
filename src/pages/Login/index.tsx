@@ -3,8 +3,8 @@ import "./login.scss";
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { axiosInstance } from '../../services/APIConfig';
-import { getAuthUser } from '../../contex/Auth';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 interface LoginFormInterface {
   email: string;
@@ -15,7 +15,7 @@ const Login = () => {
   const [formData, setFormData] = useState<LoginFormInterface>({ email: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<LoginFormInterface | null>(null);
-  const { setAccessToken, setIsLoggedIn } = getAuthUser();
+  const { setAccessToken, setIsLoggedIn } = useAuth();
   const loaction = useLocation()
   const navigate = useNavigate();
   const from = loaction.state?.from?.pathname || '/products';

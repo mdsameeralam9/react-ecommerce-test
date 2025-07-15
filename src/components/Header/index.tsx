@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaHeart, FaShoppingBag } from 'react-icons/fa';
 import './header.scss';
-import { getAuthUser } from '../../contex/Auth';
 import { axiosInstance } from '../../services/APIConfig';
 import { ClipLoader } from 'react-spinners';
+import useAuth from '../../hooks/useAuth';
 
 const Header = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { setAccessToken, setIsLoggedIn, isLoggedIn=false } = getAuthUser();
+  const { setAccessToken, setIsLoggedIn, isLoggedIn=false } = useAuth();
   const handlelogout = async () => {
     // make an api call
     setLoading(true)

@@ -8,12 +8,10 @@ import AuthProvider from './contex/Auth.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={reduxStore}>
-      <AuthProvider>
+  <Provider store={reduxStore}>
+    <AuthProvider>
       <App />
-      </AuthProvider>
-    </Provider>
-  
-  </StrictMode>,
+    </AuthProvider>
+  </Provider>
+
 )
