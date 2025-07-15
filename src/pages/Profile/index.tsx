@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import "./profile.scss";
-import { axiosInstance } from "../../services/APIConfig";
 import { ClipLoader } from "react-spinners";
-import useAuth from "../../hooks/useAuth";
+import useAPIPrivateRoute from "../../hooks/useAPIPrivateRoute";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // some static data
 const user = {
@@ -12,7 +12,8 @@ const user = {
   address: "123 Main Street, Bangalore, India",
   mobile: "+91 9876543210",
   occupation: "Software Engineer",
-  company: "Tech Solutions Pvt Ltd"
+  company: "Tech Solutions Pvt Ltd",
+  imageSrc: "https://fastly.picsum.photos/id/591/800/800.jpg?hmac=_mz15a8UGapfdZncmLtJrGRFU8__ZWftHRqAWz321Wc"
 };
 
 type UserInterface = Record<string, any>
@@ -20,27 +21,21 @@ type UserInterface = Record<string, any>
 const Profile = () => {
   const [userData, setUserData] = useState<UserInterface>(user);
   const [loading, setLoading] = useState<boolean>(false);
-  const { accessToken } = useAuth()
+  const axiosPrivateInstance = useAPIPrivateRoute();
+  const navigate  = useNavigate();
+  const location = useLocation();
 
-  const fetchUserCred = async (signal) => {
+  const fetchUserCred = async (signal: AbortSignal) => {
     setLoading(true)
     try {
-      const response = await axiosInstance.get('/user',
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`
-          },
-          withCredentials: true,
-          signal
-        }
-      );
+      const response = await axiosPrivateInstance('/user', { signal });
       if (!response?.data?.ok) {
         throw new Error("samothing went wrong")
       }
       setUserData(u => ({ ...u, ...response?.data?.user }))
     } catch (error) {
-      alert("failed to fetch user data")
+      console.log(error)
+      navigate('/login', {state: {from: location}, replace: true})
     } finally {
       setLoading(false)
     }
@@ -59,7 +54,13 @@ const Profile = () => {
       {loading && <ClipLoader />}
       {!loading &&
         <div className="profile-card">
-          <FaUserCircle className="profile-icon" />
+          {userData?.imageSrc ?
+            <div className="imagesIconWrapuser" >
+              <img src={userData?.imageSrc} alt="user icon" width={"100%"} height={"100%"} style={{ borderRadius: "50%" }} />
+            </div>
+            :
+            <FaUserCircle className="profile-icon" />
+          }
           <h2>{userData?.name}</h2>
           <p><strong>Email:</strong> {userData?.email}</p>
           <p><strong>Mobile:</strong> {userData?.mobile}</p>

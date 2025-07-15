@@ -9,19 +9,17 @@ import useAuth from '../../hooks/useAuth';
 const Header = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { setAccessToken, setIsLoggedIn, isLoggedIn=false } = useAuth();
+  const {  setAuthState, authState } = useAuth();
   const handlelogout = async () => {
     // make an api call
     setLoading(true)
     try {
-      await new Promise((res) => setTimeout(() => { res(1) }, 4000))
+      await new Promise((res) => setTimeout(() => { res(1) }, 1000))
       const response = await axiosInstance.get('/logout', { withCredentials: true });
       if(!response?.data?.ok){
         throw new Error("failed to logout")
       }
-      console.log(response)
-      setAccessToken('')
-      setIsLoggedIn(false)
+      setAuthState(a => ({...a, accessToken:"", isLoggedIn: false}))
     } catch (error) {
       alert("Failed to logout")
     } finally {
@@ -59,7 +57,7 @@ const Header = () => {
         <Link to="/bag" title="Bag">
           <FaShoppingBag className="icon" />
         </Link>
-        {isLoggedIn && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
+        {authState.isLoggedIn && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
 
       </div>
     </header>

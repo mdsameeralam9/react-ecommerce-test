@@ -3,9 +3,8 @@ import { AuthContext } from '../contex/Auth'
 
 const useAuth = () => {
   const context = useContext(AuthContext);
-
-  useDebugValue(context?.isLoggedIn, (isLoggedIn) =>
-    isLoggedIn ? 'User Logged In' : 'Not Logged In'
+  useDebugValue(context?.authState?.isLoggedId, (isLoggedId) =>
+    isLoggedId ? 'User Logged In' : 'Not Logged In'
   );
 
   if (!context) {

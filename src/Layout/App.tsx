@@ -11,10 +11,9 @@ import Cart from '../pages/Bag';
 import useAuth from '../hooks/useAuth';
 
 const ProtectedRoute = () => {
-  const { isLoggedIn } = useAuth();
+  const { authState: { isLoggedId=false } } = useAuth();
   const location = useLocation();
-  const isUser = isLoggedIn ?? false;
-  return isUser ? <Outlet /> : <Navigate to="" state={{ from: location }} replace />
+  return isLoggedId ? <Outlet /> : <Navigate to="" state={{ from: location }} replace />
 }
 
 // how to login and logout using this token 

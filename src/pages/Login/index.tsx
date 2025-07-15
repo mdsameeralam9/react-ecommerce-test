@@ -15,7 +15,7 @@ const Login = () => {
   const [formData, setFormData] = useState<LoginFormInterface>({ email: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<LoginFormInterface | null>(null);
-  const { setAccessToken, setIsLoggedIn } = useAuth();
+  const { setAuthState } = useAuth();
   const loaction = useLocation()
   const navigate = useNavigate();
   const from = loaction.state?.from?.pathname || '/products';
@@ -44,9 +44,7 @@ const Login = () => {
         console.log(response)
         throw new Error("failed to login")
       }
-      setAccessToken(response?.data?.accessToken)
-      setIsLoggedIn(true)
-
+      setAuthState(a => ({...a, accessToken: response?.data?.accessToken, isLoggedId: true}))
       navigate(from, { replace: true })
     } catch (error) {
       setError(true)

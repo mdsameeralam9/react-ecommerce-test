@@ -1,34 +1,42 @@
-import React from 'react'
-import useAuth from './useAuth'
+import useAuth from './useAuth';
 import { axiosInstance } from '../services/APIConfig';
 
-const useRefreshToken = () => {
-  const { setAccessToken, setIsLoggedIn } = useAuth();
-
-  const refresh = async() => {
-    try {
-        const response = await axiosInstance.post("/refresh-token", { 
-            headers: {
-                'Content-type': "application/json",
-                // "Authorization": `Bearer ${toke}`
-            },
-            withCredentials: true
-        })
-
-        if(!response.data?.ok){
-            throw new Error("APi failed to generate access token")
-        }
-
-        setAccessToken(response?.data?.accessToken)
-        setIsLoggedIn(true)
-
-        return response?.data?.accessToken
-    } catch (error) {
-        alert(error?.message || "APi failed to generate access token")
-    }
-  }
-
-  return refresh;
+interface RefreshTokenResponse {
+  ok: boolean;
+  accessToken: string;
 }
 
-export default useRefreshToken
+const useRefreshToken = () => {
+  const { setAuthState } = useAuth();
+
+  const refresh = async (): Promise<string | undefined> => {
+    try {
+      const response = await axiosInstance.post<RefreshTokenResponse>(
+        '/refresh-token',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log("useRefreshToken ===>", response)
+
+      if (!response.data?.ok) {
+        throw new Error('API failed to generate access token');
+      }
+
+      setAuthState(a => ({...a, accessToken: response.data.accessToken, isLoggedId: true}))
+
+      return response.data.accessToken;
+    } catch (error: any) {
+      alert(error?.message || 'API failed to generate access token');
+    }
+  };
+
+  return refresh;
+};
+
+export default useRefreshToken;

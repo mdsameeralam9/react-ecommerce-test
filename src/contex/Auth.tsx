@@ -1,40 +1,29 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
+
+interface AuthDataInterface {
+  accessToken: string;
+  isLoggedId:boolean;
+}
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  accessToken: string;
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
+  authState: AuthDataInterface;
+  setAuthState: React.Dispatch<React.SetStateAction<AuthDataInterface>>;
 }
 
 // Create context with default undefined
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Custom hook to use AuthContext
-// export const getAuthUser = (): AuthContextType => {
-//   const context = useContext(AuthContext);
-//   if (!context) {
-//     throw new Error("getAuthUser must be used within an AuthProvider");
-//   }
-//   return context;
-// };
+export const AuthContext = createContext<AuthContextType |undefined>(undefined);
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<string>("");
-  
-
+  const [authState, setAuthState] = useState<AuthDataInterface>({ accessToken: "", isLoggedId: false});
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn,
-        setIsLoggedIn,
-        accessToken,
-        setAccessToken,
+        authState,
+        setAuthState
       }}
     >
       {children}
