@@ -33,7 +33,7 @@ const ProtectedRoute = () => {
 // search filter sidebar, details
 
 function App() {
-
+  throw new Error("from app")
   return (
     <BrowserRouter>
       <Header />
