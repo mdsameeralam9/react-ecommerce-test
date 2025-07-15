@@ -19,7 +19,7 @@ const Header = () => {
       if(!response?.data?.ok){
         throw new Error("failed to logout")
       }
-      setAuthState(a => ({...a, accessToken:"", isLoggedIn: false}))
+      setAuthState(a => ({...a, accessToken:"", isLoggedId: false}))
     } catch (error) {
       alert("Failed to logout")
     } finally {
@@ -57,7 +57,7 @@ const Header = () => {
         <Link to="/bag" title="Bag">
           <FaShoppingBag className="icon" />
         </Link>
-        {authState.isLoggedIn && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
+        {authState.isLoggedId && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
 
       </div>
     </header>
