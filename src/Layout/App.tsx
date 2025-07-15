@@ -19,11 +19,14 @@ const ProtectedRoute = () => {
 // how to login and logout using this token 
 // how to accees route and refresh if fail in intersection
 // other login logot scenarios
+// ErrorBoundry
+// -----------done---------
+// how to presist when refresh
 // seesion based login
 
 // font
 // optimisation
-// ErrorBoundry
+
 // redux toolkit - list add, wishlist addredd checkout, payment, header status
 
 // how many ways for protected route
@@ -32,8 +35,25 @@ const ProtectedRoute = () => {
 // dark ligh theme
 // search filter sidebar, details
 
+// if user is idle for 5 minute then logout 
+
+//1. login and logout with [`jwt accesstoken and refreshToken`] and
+{/**
+1.  store by Browser `refreshToken` in cookie in browser 
+2. `refreshToken` use to to generate accessToken access resources.
+3. pass in API call and keep this accessToken in state AuthProvider and remove when logout.
+4. refreshToken is remove while making api call in logout in backend 
+5. even we cannot access refreshToken with Javascript and it is secure
+6. when refresh manual you logout
+7. we no need to manula send refreshToken while generating the accessToken that is send by browser we only pass {withCredentials: true} in api call 
+8. 
+  
+*/}
+//2. login and logout with [`jwt token`]  and store in localStorage and while logut remove from localStorage
+//3. login and logout with [`jwt token`]  and store in sessionStorage and while logut remove from sessionStorage
+//4. login and logout with accesstoken and refreshToken  and store in localStorage. and while logut remove from localStorage.
+
 function App() {
-  throw new Error("from app")
   return (
     <BrowserRouter>
       <Header />
