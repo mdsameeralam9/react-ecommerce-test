@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import './assets/styles/stylesheet.css';
 import './index.css'
 import App from './Layout/App.tsx'
 import { reduxStore } from "./redux/store"
