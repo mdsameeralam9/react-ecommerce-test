@@ -4,9 +4,9 @@ import './App.css';
 
 // Eagerly loaded components for critical paths
 import Login from '../pages/Login';
-import Header from '../components/Header';
+import Header from '../components/layout/Header';
 import ProductList from '../pages/Products';
-import ProtectedRoute from '../services/ProtectedRoute';
+import ProtectedRoute from '../routes/ProtectedRoute';
 
 // Lazy-loaded components for secondary paths
 const Wishlist = lazy(() => import('../pages/Wishlist'));

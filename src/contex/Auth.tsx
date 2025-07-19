@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 
 interface AuthDataInterface {
   accessToken: string;
-  isLoggedId:boolean;
+  isLoggedIn:boolean;
 }
 
 interface AuthContextType {
@@ -18,7 +18,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [authState, setAuthState] = useState<AuthDataInterface>({ accessToken: "", isLoggedId: false});
+  const [authState, setAuthState] = useState<AuthDataInterface>({ accessToken: "", isLoggedIn: false});
   return (
     <AuthContext.Provider
       value={{

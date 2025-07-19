@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaHeart, FaShoppingBag } from 'react-icons/fa';
 import './header.scss';
-import { axiosInstance } from '../../services/APIConfig';
+import { axiosInstance } from '../../../services/APIConfig';
 import { ClipLoader } from 'react-spinners';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
@@ -23,7 +23,7 @@ const Header = () => {
       if(!response?.data?.ok){
         throw new Error("failed to logout")
       }
-      setAuthState(a => ({...a, accessToken:"", isLoggedId: false}))
+      setAuthState(a => ({...a, accessToken:"", isLoggedIn: false}))
     } catch (error) {
       alert("Failed to logout")
     } finally {
@@ -62,7 +62,7 @@ const Header = () => {
           <FaShoppingBag className="icon" />
           <span style={{position: "absolute", top: "-7px"}}>{length}</span>
         </Link>
-        {authState.isLoggedId && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
+        {authState.isLoggedIn && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
 
       </div>
     </header>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "./login.scss";
-import Button from '../../components/Button';
-import Input from '../../components/Input';
+import Button from '../../components/common/Button';
+import Input from '../../components/common/Input';
 import { axiosInstance } from '../../services/APIConfig';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
@@ -44,7 +44,7 @@ const Login = () => {
         console.log(response)
         throw new Error("failed to login")
       }
-      setAuthState(a => ({...a, accessToken: response?.data?.accessToken, isLoggedId: true}))
+      setAuthState(a => ({...a, accessToken: response?.data?.accessToken, isLoggedIn: true}))
       navigate(from, { replace: true })
     } catch (error) {
       setError(true)

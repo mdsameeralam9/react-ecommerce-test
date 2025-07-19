@@ -28,7 +28,7 @@ const useRefreshToken = () => {
         throw new Error('API failed to generate access token');
       }
 
-      setAuthState(a => ({...a, accessToken: response.data.accessToken, isLoggedId: true}))
+      setAuthState(a => ({...a, accessToken: response.data.accessToken, isLoggedIn: true}))
 
       return response.data.accessToken;
     } catch (error: any) {
