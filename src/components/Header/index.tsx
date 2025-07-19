@@ -5,11 +5,15 @@ import './header.scss';
 import { axiosInstance } from '../../services/APIConfig';
 import { ClipLoader } from 'react-spinners';
 import useAuth from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const [loading, setLoading] = useState<boolean>(false);
-
   const {  setAuthState, authState } = useAuth();
+  const { length=0 } = useSelector(state => state.cart);
+
+  console.log(" length ", length)
+
   const handlelogout = async () => {
     // make an api call
     setLoading(true)
@@ -54,8 +58,9 @@ const Header = () => {
         <Link to="/wishlist" title="Wishlist">
           <FaHeart className="icon" />
         </Link>
-        <Link to="/bag" title="Bag">
+        <Link to="/bag" title="Bag" style={{position: "relative"}}>
           <FaShoppingBag className="icon" />
+          <span style={{position: "absolute", top: "-7px"}}>{length}</span>
         </Link>
         {authState.isLoggedId && <h5 onClick={handlelogout} style={{cursor: "pointer"}}>{loading ? <ClipLoader /> : "Logout"}</h5>}
 

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { FaHeart, FaShoppingCart } from 'react-icons/fa';
 import './products.scss';
 import { fetchProducts } from "../../redux/features/product/slice"
+import { addToCart } from '../../redux/features/cart/slice';
 import { useDispatch, useSelector } from 'react-redux';
  
 const ProductList = () => {
@@ -51,6 +52,7 @@ const ProductList = () => {
                             </button>
                             <button
                                 className="add-to-cart"
+                                onClick={() => dispatch(addToCart(product))}
                             >
                                 <FaShoppingCart />
                             </button>

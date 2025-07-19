@@ -1,65 +1,49 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Cart.scss";
+import { useSelector } from "react-redux";
+import { loadStripe } from '@stripe/stripe-js';
+import { axiosInstance, axiosPrivateInstance } from "../../services/APIConfig";
 
-type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image?: string;
-  details?: string;
-};
-
-const initialCart: CartItem[] = [
-  {
-    id: 1,
-    name: "Pi Pizza Oven",
-    price: 469.99,
-    quantity: 1,
-    details: "Estimated Ship Date: June 6th • Fuel Source: Wood Only",
-  },
-  {
-    id: 2,
-    name: "Solo Stove Grill Ultimate Bundle",
-    price: 549.99,
-    quantity: 1,
-    details: "Add accident protection for $29.99",
-  },
-  {
-    id: 3,
-    name: "Solo Stove Starters (4 pack)",
-    price: 0.0,
-    quantity: 1,
-  },
-  {
-    id: 4,
-    name: "Solo Stove Charcoal Grill Pack",
-    price: 0.0,
-    quantity: 1,
-  },
-];
 
 const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCart);
-  const [coupon, setCoupon] = useState("");
+  const { cart = [], length = 0, totalPrice = 0 } = useSelector(state => state.cart);
 
-  const updateQuantity = (id: number, delta: number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
+  const updateQuantity = () => {
   };
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const tax = +(subtotal * 0.1).toFixed(2);
-  const total = +(subtotal + tax).toFixed(2);
+  //makePayment
+  const makePayment = async () => {
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
+    // pass data product
+    const body = {
+      products: cart.map((item, index) => ({ ...item, price: index + 1, quantity: 1 }))
+    };
+
+    // header to strigify body data
+    const headers = {
+      'Content-type': 'application/json'
+    }
+
+    const responseAPi = await fetch("http://localhost:3000/api/create-payment-intent", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    })
+
+    const session = await responseAPi.json();
+    const result = stripePromise?.redirectToCheckout({
+      sessionId: session.id
+    })
+
+    if (result.error) {
+      console.log("result ===>", result)
+    }
+  }
 
   return (
     <div className="cart-page">
-      <h2>Your Cart ({cartItems.length} items)</h2>
+      <h2>Your Cart ({length} items)</h2>
       <table className="cart-table">
         <thead>
           <tr>
@@ -70,21 +54,25 @@ const Cart: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map((item) => (
+          {cart.map((item) => (
             <tr key={item.id}>
-              <td>
-                <div className="item-name">{item.name}</div>
-                {item.details && <div className="item-details">{item.details}</div>}
+              <td style={{ display: "flex", gap: "5px" }}>
+                <img src={item?.image} width={"40px"} height={"60px"} />
+                <div className="infoDetai">
+                  <div className="item-name">{item.category}</div>
+                  {item.title && <div className="item-details">{item.title}</div>}
+                </div>
+
               </td>
               <td>${item.price.toFixed(2)}</td>
               <td>
                 <div className="quantity-control">
                   <button onClick={() => updateQuantity(item.id, -1)}>-</button>
-                  <span>{item.quantity}</span>
+                  <span>{1}</span>
                   <button onClick={() => updateQuantity(item.id, 1)}>+</button>
                 </div>
               </td>
-              <td>${(item.price * item.quantity).toFixed(2)}</td>
+              <td>${(item.price).toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
@@ -93,27 +81,19 @@ const Cart: React.FC = () => {
       <div className="cart-summary">
         <div className="summary-row">
           <span>Subtotal</span>
-          <span>${subtotal.toFixed(2)}</span>
+          <span>${totalPrice.toFixed(2)}</span>
         </div>
         <div className="summary-row">
           <span>Sales Tax</span>
-          <span>${tax.toFixed(2)}</span>
-        </div>
-        <div className="summary-row coupon-row">
-          <input
-            type="text"
-            placeholder="Enter coupon code"
-            value={coupon}
-            onChange={(e) => setCoupon(e.target.value)}
-          />
-          <button>Apply</button>
+          <span>${"0.00"}</span>
         </div>
         <div className="summary-row total-row">
           <strong>Grand Total</strong>
-          <strong>${total.toFixed(2)}</strong>
+          <strong>${totalPrice.toFixed(2)}</strong>
         </div>
         <p className="free-shipping">🎉 Congrats, you're eligible for Free Shipping.</p>
-        <button className="checkout-btn">Check out</button>
+        <button className="checkout-btn" onClick={makePayment}>Check out</button>
+
       </div>
     </div>
   );
