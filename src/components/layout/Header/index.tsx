@@ -42,10 +42,10 @@ const Header = () => {
       </div>
 
       <nav className="nav-links">
-        <Link to="/products?query=men's clothing">Men</Link>
-        <Link to="/products?query=women's clothing">Women</Link>
-        <Link to="/products?query=jewelery">Jwellery</Link>
-        <Link to="/products?query=electronics">Electronics</Link>
+        <Link to="/products?query=men">Men</Link>
+        <Link to="/products?query=women">Women</Link>
+        <Link to="/products?query=jewellery">Jwellery</Link>
+        <Link to="/products?query=laptop">Laptops</Link>
       </nav>
 
       <div className="search-bar">

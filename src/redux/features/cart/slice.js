@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Async action to fetch cart data from an API
-const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
+export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
     const response = await fetch("https://fakestoreapi.com/carts/1");
     const data = await response.json();
     return data.products.map(p => ({
@@ -10,6 +10,8 @@ const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
         price: 100 // Mock price, ideally fetched from product DB
     }));
 });
+
+
 
 const cartSlice = createSlice({
     name: "cart-slice",

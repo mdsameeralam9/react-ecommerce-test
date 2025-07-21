@@ -22,25 +22,35 @@ const ProductList = () => {
     }, []);
 
     useEffect(() => {
-        if(authState?.isLoggedIn){
-          dispatch(getWishList(authState.accessToken))
+        if (authState?.isLoggedIn) {
+            dispatch(getWishList(authState.accessToken))
         }
     }, [authState.isLoggedIn]);
 
     const listData = useMemo(() => {
-        return category ? stateSelector?.items?.filter(d => d.category.toLowerCase().includes(category.toLowerCase())) : stateSelector?.items
+        if (!category) return stateSelector?.items;
+
+        return stateSelector?.items?.filter(d => {
+            const productCategory = d.category.toLowerCase();
+            const searchCategory = category.toLowerCase().trim();
+            return productCategory.includes(searchCategory);
+        });
     }, [category, stateSelector?.items]);
+
+
+
+    console.log("ProductList ==> listData", listData)
 
     if (stateSelector?.status === 'loading') return <p>Loading...</p>;
     if (stateSelector?.status === 'failed') return <p>Error: Something went wrong</p>;
 
     return (
         <>
-            <SEO title={!category ? "Product List": category}/>
+            <SEO title={!category ? "Product List" : category} />
             <div className="product-list">
                 <h2>Product List</h2>
                 <div className="products">
-                    {listData?.map((product:ProductCardType) => (
+                    {listData?.map((product: ProductCardType) => (
                         <Card product={product} />
                     ))}
                 </div>
