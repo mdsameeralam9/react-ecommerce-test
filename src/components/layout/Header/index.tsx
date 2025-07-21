@@ -6,6 +6,7 @@ import { axiosInstance } from '../../../services/APIConfig';
 import { ClipLoader } from 'react-spinners';
 import useAuth from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
+import BrandImg from "../../../assets/Images/brand.png"
 
 const Header = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,9 +35,9 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="brand">
-        <Link to="/products">
-          {/* <img src="/logo.png" alt="Brand Logo" /> */}
-          Shop Online
+        <Link to="/products" style={{display: "flex", alignItems: "center", gap: "10px"}}>
+          <img src={BrandImg} alt="Brand Logo" />
+          {/* <span>Shop Online</span> */}
         </Link>
       </div>
 
