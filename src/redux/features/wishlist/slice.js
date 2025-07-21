@@ -93,7 +93,8 @@ const wishListSlice = createSlice({
       
       // Remove from wishlist cases
       .addCase(removeFromWishList.fulfilled, (state, action) => {
-        state.items = state.items.filter(item => item.id !== action.payload.id);
+        console.log("removeFromWishList.fulfilled ===>", action.payload, state.items)
+        state.items = state.items.filter(item => item.productId !== action.payload.id);
         state.isPending = false;
       });
   }
